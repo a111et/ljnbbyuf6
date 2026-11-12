@@ -1,0 +1,23 @@
+{{ define "main" }}
+<div class="container">
+  <header class="site-header">
+    <h1 class="site-title"><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
+    <p class="site-description">{{ .Site.Params.description }}</p>
+  </header>
+
+  <main>
+    <ul class="post-list">
+      {{ range where .Site.RegularPages "Section" "posts" }}
+      <li class="post-item">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 января 2006" }}</time>
+        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      </li>
+      {{ end }}
+    </ul>
+  </main>
+
+  <footer class="site-footer">
+    <p>{{ .Site.Title }} · {{ now.Year }}</p>
+  </footer>
+</div>
+{{ end }}

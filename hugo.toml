@@ -1,0 +1,25 @@
+baseURL = "https://a111et.github.io/ljnbbyuf6/"
+languageCode = "ru"
+defaultContentLanguage = "ru"
+title = "Мой блог"
+
+# Чистые URL без .html
+[permalinks]
+  posts = "/posts/:slug/"
+
+# RSS
+[outputs]
+  home = ["HTML", "RSS"]
+
+[params]
+  description = "Минималистичный блог о технологиях и мыслях"
+  author = "Автор"
+
+[markup]
+  [markup.highlight]
+    style = "monokai"
+    lineNos = false
+    noClasses = false
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
