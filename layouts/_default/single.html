@@ -3,9 +3,15 @@
   <header class="article-header">
     <h1 class="article-title">{{ .Title }}</h1>
     <div class="article-meta">
-      {{ with .Params.author }}<span class="article-author">{{ . }}</span>{{ end }}
+      {{ with .Params.author }}<span>{{ . }}</span><span class="sep">·</span>{{ end }}
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 января 2006" }}</time>
+      {{ if .Params.pinned }}<span class="sep">·</span><span>📌 Закреплено</span>{{ end }}
     </div>
+    {{ with .Params.tags }}
+    <div class="article-tags">
+      {{ range . }}<span class="article-tag">#{{ . }}</span>{{ end }}
+    </div>
+    {{ end }}
   </header>
 
   <div class="article-content">
@@ -14,6 +20,9 @@
 
   <footer class="article-footer">
     <a href="{{ .Site.BaseURL }}" class="back-link">← Все записи</a>
+    {{ with .NextInSection }}
+    <a href="{{ .Permalink }}" class="back-link">{{ .Title }} →</a>
+    {{ end }}
   </footer>
 </article>
 {{ end }}

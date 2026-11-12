@@ -8,6 +8,9 @@
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ with .Summary }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}{{ end }}">
   <meta name="author" content="{{ with .Params.author }}{{ . }}{{ else }}{{ .Site.Params.author }}{{ end }}">
 
+  {{/* Favicon — простой SVG-кружок */}}
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%237c3aed'/><text x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>B</text></svg>">
+
   {{/* OpenGraph */}}
   <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
   <meta property="og:title" content="{{ .Title }}">
@@ -39,5 +42,45 @@
 </head>
 <body>
   {{ block "main" . }}{{ end }}
+
+  {{/* Скрипт для кнопки копирования кода */}}
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Добавляем кнопку ко всем блокам кода
+    document.querySelectorAll('.highlight, pre:not(.highlight pre)').forEach(function(block) {
+      // Не добавляем дубли
+      if (block.querySelector('.copy-btn')) return;
+      
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Скопировать';
+      btn.setAttribute('aria-label', 'Скопировать код');
+      
+      btn.addEventListener('click', function() {
+        var code = block.querySelector('code');
+        if (!code) code = block;
+        var text = code.innerText || code.textContent;
+        
+        navigator.clipboard.writeText(text).then(function() {
+          btn.textContent = '✓ Скопировано';
+          btn.classList.add('copied');
+          setTimeout(function() {
+            btn.textContent = 'Скопировать';
+            btn.classList.remove('copied');
+          }, 2000);
+        });
+      });
+      
+      // Позиция relative для .highlight
+      if (block.classList.contains('highlight')) {
+        block.style.position = 'relative';
+      } else {
+        block.style.position = 'relative';
+      }
+      
+      block.appendChild(btn);
+    });
+  });
+  </script>
 </body>
 </html>

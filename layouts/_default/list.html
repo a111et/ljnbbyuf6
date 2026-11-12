@@ -1,16 +1,24 @@
 {{ define "main" }}
 <div class="container">
   <header class="site-header">
-    <h1 class="site-title"><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
-    {{ with .Title }}<h2 class="section-title">{{ . }}</h2>{{ end }}
+    <svg class="site-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" fill="#7c3aed"/>
+      <text x="50" y="68" font-size="52" text-anchor="middle" fill="white" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="bold">B</text>
+    </svg>
+    <div class="site-header-text">
+      <h1 class="site-title"><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
+      {{ with .Title }}<p class="site-description">{{ . }}</p>{{ end }}
+    </div>
   </header>
 
   <main>
     <ul class="post-list">
       {{ range .Pages }}
-      <li class="post-item">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 января 2006" }}</time>
-        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      <li class="post-item{{ if .Params.pinned }} pinned{{ end }}">
+        <a href="{{ .Permalink }}" class="post-item-link">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time>
+          <span class="post-item-title">{{ .Title }}</span>
+        </a>
       </li>
       {{ end }}
     </ul>

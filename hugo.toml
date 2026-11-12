@@ -2,6 +2,7 @@ baseURL = "https://a111et.github.io/ljnbbyuf6/"
 languageCode = "ru"
 defaultContentLanguage = "ru"
 title = "Мой блог"
+enableEmoji = true
 
 # Чистые URL без .html
 [permalinks]
@@ -13,13 +14,17 @@ title = "Мой блог"
 
 [params]
   description = "Минималистичный блог о технологиях и мыслях"
-  author = "Автор"
+  author = "a111et"
 
 [markup]
   [markup.highlight]
-    style = "monokai"
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = true
     lineNos = false
     noClasses = false
+    style = "dracula"
+    tabWidth = 4
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true

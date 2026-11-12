@@ -1,23 +1,58 @@
 {{ define "main" }}
 <div class="container">
   <header class="site-header">
-    <h1 class="site-title"><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
-    <p class="site-description">{{ .Site.Params.description }}</p>
+    <svg class="site-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="46" fill="#7c3aed"/>
+      <text x="50" y="68" font-size="52" text-anchor="middle" fill="white" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-weight="bold">B</text>
+    </svg>
+    <div class="site-header-text">
+      <h1 class="site-title"><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
+      <p class="site-description">{{ .Site.Params.description }}</p>
+    </div>
   </header>
 
   <main>
+    {{/* Закреплённые посты */}}
+    {{ $pinned := where (where .Site.RegularPages "Section" "posts") ".Params.pinned" true }}
+    {{ if $pinned }}
+    <section class="pinned-section">
+      <div class="section-label"><span class="pin-icon">📌</span> Закреплено</div>
+      <ul class="post-list">
+        {{ range $pinned }}
+        <li class="post-item pinned">
+          <a href="{{ .Permalink }}" class="post-item-link">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time>
+            <span class="post-item-title">{{ .Title }}</span>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+    {{ end }}
+
+    {{/* Все посты */}}
+    {{ $posts := where .Site.RegularPages "Section" "posts" }}
+    {{ if $posts }}
     <ul class="post-list">
-      {{ range where .Site.RegularPages "Section" "posts" }}
-      <li class="post-item">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 января 2006" }}</time>
-        <a href="{{ .Permalink }}">{{ .Title }}</a>
+      {{ range $posts }}
+      <li class="post-item{{ if .Params.pinned }} pinned{{ end }}">
+        <a href="{{ .Permalink }}" class="post-item-link">
+          <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02.01.2006" }}</time>
+          <span class="post-item-title">{{ .Title }}</span>
+        </a>
       </li>
       {{ end }}
     </ul>
+    {{ else }}
+    <div class="empty-state">
+      <p>Пока нет записей. Создайте первую статью в <code>content/posts/</code></p>
+    </div>
+    {{ end }}
   </main>
 
   <footer class="site-footer">
-    <p>{{ .Site.Title }} · {{ now.Year }}</p>
+    <span>{{ .Site.Title }} · {{ now.Year }}</span>
+    <a href="{{ "index.xml" | absURL }}" title="RSS">RSS</a>
   </footer>
 </div>
 {{ end }}
