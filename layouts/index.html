@@ -30,9 +30,9 @@
     </section>
     {{ end }}
 
-    {{/* Все посты */}}
-    {{ $posts := where .Site.RegularPages "Section" "posts" }}
-    {{ if $posts }}
+    {{/* Все посты (без закреплённых, если они уже показаны выше) */}}
+    {{ $posts := where (where .Site.RegularPages "Section" "posts") ".Params.pinned" "ne" true }}
+    {{ if or $posts (not $pinned) }}
     <ul class="post-list">
       {{ range $posts }}
       <li class="post-item{{ if .Params.pinned }} pinned{{ end }}">
